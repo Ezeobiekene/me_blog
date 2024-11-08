@@ -1,26 +1,23 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
-
 
 const Edit = () => {
   const [post, setPost] = useState({
     title: "",
     author: "",
     content: "",
-  })
+  });
 
   const navigate = useNavigate();
   const location = useLocation();
-  const postId = location.pathname.split('/')[2];
-
+  const postId = location.pathname.split("/")[2];
 
   useEffect(() => {
     const fetchAllPosts = async () => {
       try {
         const res = await axios.get("http://localhost:8800/post");
-        const foundPost = res.data.find((b) => b.id === parseInt(postId))
+        const foundPost = res.data.find((b) => b.id === parseInt(postId));
         setPost(foundPost);
       } catch (err) {
         console.log(err);
@@ -30,25 +27,24 @@ const Edit = () => {
   }, [postId]);
 
   const handleChange = (e) => {
-    setPost((prev) => ({...prev, [e.target.name]: e.target.value}))
-  }
+    setPost((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
 
   const handleClick = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:8800/post/${postId}`, post)
-      navigate('/');
+      await axios.put(`http://localhost:8800/post/${postId}`, post);
+      navigate("/");
     } catch (err) {
       console.log(err);
     }
-  }
-  
+  };
 
   return (
     <div>
       <h1>Edit Post</h1>
 
-      <input 
+      <input
         type="text"
         placeholder="title"
         onChange={handleChange}
@@ -56,7 +52,7 @@ const Edit = () => {
         className="input"
         value={post.title}
       />
-      <input 
+      <input
         type="text"
         placeholder="author"
         onChange={handleChange}
@@ -64,7 +60,7 @@ const Edit = () => {
         className="input"
         value={post.author}
       />
-      <input 
+      <input
         type="text"
         placeholder="content"
         onChange={handleChange}
@@ -73,9 +69,11 @@ const Edit = () => {
         value={post.content}
       />
 
-      <button className="update" onClick={handleClick}>Update</button>
+      <button className="update" onClick={handleClick}>
+        Update
+      </button>
     </div>
-  )
-}
+  );
+};
 
-export default Edit
+export default Edit;
